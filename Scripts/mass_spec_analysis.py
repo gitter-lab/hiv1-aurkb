@@ -8,15 +8,12 @@ import os.path
 Author: Chris Magnano
 8/17/2018
 
-This script takes in raw data for both experiments, normalizes it, calculates fold changes, and uses limma in an R script to get significance values.
+This script takes in raw data for both experiments, normalizes it, calculates fold changes, and uses limma in an R script to get significance values. It also creates input files for phosFate.
 
 Outputs:
 2. Files with all fold changes and p-values - 6 files, 3 10-plexes, and protein by phos data.
 3. Files with only significantly changed values - 8 files, as we seperate the first 10-plex by timepoint.
 
-Future improvements:
-    -If we made this take in a file with lists of protein and phosphoprotein file names, and a file with column names for each, this would be fully generic.
-    -Right now the script has to be run twice, and some calcualtion is re-done each time. That's pretty ugly (but hey, bibtex does it). Maybe we call R from python? Maybe call it with subprocess?
 """
 
 verbose = False
@@ -346,17 +343,17 @@ def makeMergedTables(plex1, plex2, plex3, fName, hasIso=False):
     experimentNums = ["1","1","2","2"]
     timePoints = ["5","60","5","60"]
     outCols = []
-    idCols = ["Uniprot"]
+    idCols = ["Protein Group Name","Uniprot IDs","Representative Protein Description","Uniprot"]
     if hasIso:
-        idCols.append("Isoform")
+        idCols = ["Protein Group","Defline","Isoform","Uniprot"]
 
     for i in range(len(allData)):
         exp = experimentNums[i]
         time = timePoints[i]
         colPref = "Experiment "+exp+" "+time+" min "
-        outColNames = ["Uniprot"]
+        outColNames = ["Protein Group Name","Uniprot IDs","Representative Protein Description","Uniprot"]
         if hasIso:
-            outColNames.append("Isoform")
+            outColNames = ["Protein Group","Defline","Isoform","Uniprot"]
         outColNames += [colPref+"fold change",colPref+"q-value"]
         allData[i] = allData[i].rename(columns={"log0"+time:outColNames[-2], "qVal0"+time:outColNames[-1]})
         allData[i] = allData[i][outColNames]
