@@ -418,7 +418,7 @@ Function to print only if verbose flag is true
 def vPrint(pStr):
     global verbose
     if verbose:
-        print pStr
+        print(pStr)
     return
 
 """
