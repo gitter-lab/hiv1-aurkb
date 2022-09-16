@@ -350,11 +350,11 @@ def makeMergedTables(plex1, plex2, plex3, fName, hasIso=False):
     for i in range(len(allData)):
         exp = experimentNums[i]
         time = timePoints[i]
-        colPref = "Experiment "+exp+" "+time+" min "
+        colPref = "Exp"+exp+" "+time+" min "
         outColNames = ["Protein Group Name","Uniprot IDs","Representative Protein Description","Uniprot"]
         if hasIso:
             outColNames = ["Protein Group","Defline","Isoform","Uniprot"]
-        outColNames += [colPref+"fold change",colPref+"q-value"]
+        outColNames += [colPref+"log2 fold change",colPref+"q-value"]
         allData[i] = allData[i].rename(columns={"log0"+time:outColNames[-2], "qVal0"+time:outColNames[-1]})
         allData[i] = allData[i][outColNames]
         outCols.append(outColNames)
@@ -397,7 +397,7 @@ def removeDuplicates(data,dupCols,normCols):
     return data
 
 """
-Get's a list of columns names for a certain timepoint
+Gets a list of columns names for a certain timepoint
 """
 def getColNames(data,time):
     colNames = []
