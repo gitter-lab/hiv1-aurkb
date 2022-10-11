@@ -138,11 +138,6 @@ def main():
     phosDat2.to_csv(outName+"unfilteredPhos2.tsv",sep='\t',index=False)
     phosDat3.to_csv(outName+"unfilteredPhos3.tsv",sep='\t',index=False)
 
-    #Save merged tables
-    vPrint("Saving merged tables")
-    makeMergedTables(protDat1, protDat2, protDat3, outName+"AllProteinData.csv")
-    makeMergedTables(phosDat1, phosDat2, phosDat3, outName+"AllPhosphoProteinData.csv",True)
-
     #Create phosfate input
     vPrint("Saving phosfate input")
     makePhosfateInput(phosDat1, "phos1_05_", outName ,"05")
@@ -158,6 +153,11 @@ def main():
     phos1_05, phos1_60 = filterRes(phosDat1,qvalThresh,foldThresh)
     phos2_05, phos2_60 = filterRes(phosDat2,qvalThresh,foldThresh)
     phos3_05, phos3_60 = filterRes(phosDat3,qvalThresh,foldThresh)
+
+    #Save merged tables
+    vPrint("Saving merged tables")
+    makeMergedTables(protDat1, protDat2, protDat3, outName+"AllProteinData.csv", qvalThresh, foldThresh)
+    makeMergedTables(phosDat1, phosDat2, phosDat3, outName+"AllPhosphoProteinData.csv", qvalThresh, foldThresh, True)
 
     #Save filtered data
     vPrint("Saving filtered data")
@@ -330,6 +330,10 @@ Makes input files for phosFate enrichment
 """
 def makePhosfateInput(data,name,outName,time):
     #Get isoform as a raw number
+    data = data.copy()
+    data["Isoform"] = data["Isoform"].str.split(";")
+    data = data.explode("Isoform")
+    data = data.dropna()
     data["IsoNum"] = data["Isoform"].str.extract(".*\((.*)\).*")
     data.to_csv(outName+name+"Phosfate.csv",sep=",",columns=["Uniprot","IsoNum","log"+time],index=False,header=False)
     return
@@ -337,16 +341,16 @@ def makePhosfateInput(data,name,outName,time):
 """
 Creates a single table of all protein or phospho data, determined by hasIso and the input data
 """
-def makeMergedTables(plex1, plex2, plex3, fName, hasIso=False):
-    #Rename columns for final output
+def makeMergedTables(plex1, plex2, plex3, fName, qvalThresh, foldThresh, hasIso=False):
     allData = [plex1, plex1, plex2, plex3]
     experimentNums = ["1","1","2","2"]
     timePoints = ["5","60","5","60"]
+
+    #Rename columns for final output
     outCols = []
     idCols = ["Protein Group Name","Uniprot IDs","Representative Protein Description","Uniprot"]
     if hasIso:
         idCols = ["Protein Group","Defline","Isoform","Uniprot"]
-
     for i in range(len(allData)):
         exp = experimentNums[i]
         time = timePoints[i]
@@ -361,6 +365,13 @@ def makeMergedTables(plex1, plex2, plex3, fName, hasIso=False):
     finalData = allData[0]
     for i in range(1,len(allData)):
         finalData = pd.merge(finalData, allData[i][outCols[i]],how="outer",on=idCols)
+
+    #Make a new column denoting what was significant
+    foldThresh = np.log2(foldThresh)
+    finalData["Significant"] = False
+    for time in ["5 min ","60 min "]:
+        for exp in ["Exp 1 ","Exp 2 "]:
+            finalData["Significant"] = finalData["Significant"] | ((finalData[exp+time+"q-value"] <= qvalThresh) & (np.abs(finalData[exp+time+"log2 fold change"]) >= foldThresh))
     finalData.to_csv(fName,sep=",",index=False,header=True)
     return
 

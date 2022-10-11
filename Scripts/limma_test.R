@@ -5,7 +5,7 @@
 #Guide above "is freely available as Free Software under the terms of the Free Software Foundation's GNU General Public License in source code form."
 
 #Installs packages if not present and loads them
-install.packages("librarian", quiet = TRUE)
+install.packages("librarian", quiet = TRUE, repos = "http://cran.us.r-project.org")
 librarian::shelf(qvalue, limma, readr,quiet=TRUE)
 
 #Load Data
