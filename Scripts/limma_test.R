@@ -26,7 +26,8 @@ cNames <- colnames(data)
 design <- c()
 
 for (i in 1:length(cNames)){
-  tmp <- unlist(strsplit(cNames[i],"_",fixed=TRUE))
+  #tmp <- unlist(strsplit(cNames[i],"_",fixed=TRUE))
+  tmp <- substr(cNames[i], 1, nchar(cNames[i])-2)
   design[i] <- tmp[1]
 }
 fDesign = model.matrix(~factor(design))
@@ -39,7 +40,7 @@ colnames(outData) <- c("pval")
 outData$qval <- qvalue(outData$pval)$qvalues
 
 outF <- unlist(strsplit(fName,"_",fixed=TRUE))
-outF <- append(outF,"tmpLimma",after=length(outF)-1)
+outF <- append(outF,"tmpLimma",after=length(outF))
 outF <- paste(outF,sep="_",collapse="_")
 print(outF)
 write.csv(outData,file=outF,quote=FALSE,row.names=FALSE)
