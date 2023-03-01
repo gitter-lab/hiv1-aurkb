@@ -1,0 +1,9 @@
+name: hiv1-aurkb
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bioconductor-limma=3.50.3 # Not available for Windows, Windows users comment out and install through Bioconductor separately
+  - bioconductor-qvalue=2.26.0
+  - r-base=4.1.1
+  - r-readr=2.1.2
