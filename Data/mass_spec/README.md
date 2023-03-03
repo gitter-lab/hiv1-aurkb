@@ -11,3 +11,6 @@ The experiments (10-plexes) contained the following biological conditions:
 Experiment 1 consisted of a single 10-plex, whereas experiment 2 had two 10-plexes.
 All of experiment 1 was wild type (WT).
 Only the wild type condition and the HIV-1-positive producer Jurkat T cells ("light" media) were used in the primary analyses here.
+
+The duplicate use of the 127C and 128C TMT labels in Exp2 (10-plex 2) appears to be a data entry error.
+This was corrected in the csv files but preserved in the xlsx files.

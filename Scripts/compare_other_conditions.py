@@ -54,7 +54,7 @@ def main():
     qvalThresh = float(args.qvalThresh)
     foldThresh = float(args.foldThresh)
 
-    #Load raw data. If future data has different column names, here's the place to that.
+    #Load raw data. If future data has different column names, here's the place to update that.
     vPrint("Loading Protein Data")
     protDat1 = loadProteinData(proteinFile1)
     prot1ColNames = ['0minRep1 (TMT 126C PCN)','0minRep2 (TMT 127N PCN)','0minRep3 (TMT 127C PCN)','0minRep4 (TMT 128N PCN)','5minRep1 (TMT 128C PCN)','5minRep2 (TMT 129N PCN)','5minRep3 (TMT 129C PCN)','60minRep1 (TMT 130N PCN)','60minRep2 (TMT 130C PCN)','60minRep3 (TMT 131N PCN)']
@@ -65,7 +65,7 @@ def main():
     prot2IDColNames = ['Uniprot']
 
     protDat3 = loadProteinData(proteinFile3)
-    prot3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','_Genome_0Min_(TMT 127C PCN)','_Genome_0Min_(TMT 128C PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 129C PCN)','_Env_60Min_(TMT 129C PCN)','_Env_60Min_(TMT 130N PCN)','_Genome_60Min_(TMT 130C PCN)','_Genome_60Min_(TMT 131N PCN)']
+    prot3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','_Genome_0Min_(TMT 127C PCN)','_Genome_0Min_(TMT 128N PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 129N PCN)','_Env_60Min_(TMT 129C PCN)','_Env_60Min_(TMT 130N PCN)','_Genome_60Min_(TMT 130C PCN)','_Genome_60Min_(TMT 131N PCN)']
     prot3IDColNames = ['Uniprot']
 
     vPrint("Loading Phospho Data")
@@ -78,7 +78,7 @@ def main():
     phos2IDColNames = ['Uniprot','Isoform']
 
     phosDat3 = loadPhosphoData(phosphoFile3)
-    phos3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','_Genome_0Min_(TMT 127C PCN)','_Genome_0Min_(TMT 128C PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 129C PCN)','_Env_60Min_(TMT 129C PCN)','_Env_60Min_(TMT 130N PCN)','_Genome_60Min_(TMT 130C PCN)','_Genome_60Min_(TMT 131N PCN)']
+    phos3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','_Genome_0Min_(TMT 127C PCN)','_Genome_0Min_(TMT 128N PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 129N PCN)','_Env_60Min_(TMT 129C PCN)','_Env_60Min_(TMT 130N PCN)','_Genome_60Min_(TMT 130C PCN)','_Genome_60Min_(TMT 131N PCN)']
     phos3IDColNames = ['Uniprot','Isoform']
 
     #Normalize data
