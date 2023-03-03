@@ -4,9 +4,10 @@
 #http://www.biostat.jhsph.edu/~kkammers/software/eupa/R_guide.html 
 #Guide above "is freely available as Free Software under the terms of the Free Software Foundation's GNU General Public License in source code form."
 
-#Installs packages if not present and loads them
-install.packages("librarian", quiet = TRUE, repos = "http://cran.us.r-project.org")
-librarian::shelf(qvalue, limma, readr,quiet=TRUE)
+#Assumes packages have already been installed through the conda environment
+library(qvalue)
+library(limma)
+library(readr)
 
 #Load Data
 args = commandArgs(trailingOnly=TRUE)
