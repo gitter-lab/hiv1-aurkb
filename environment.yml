@@ -5,5 +5,8 @@ channels:
 dependencies:
   - bioconductor-limma=3.50.3 # Not available for Windows, Windows users comment out and install through Bioconductor separately
   - bioconductor-qvalue=2.26.0
+  - numpy=1.21.2
+  - pandas=1.3.4
+  - python=3.9.7
   - r-base=4.1.1
   - r-readr=2.1.2
