@@ -229,7 +229,7 @@ def writeExpSetup(outName, experiment):
     return
 
 """
-Gets resuls of t-test and fdr correction from limma
+Gets results of t-test and fdr correction from limma
 """
 def getTestResults(outName, experiment):
     data = experiment[0]
@@ -347,7 +347,7 @@ def makeMergedTables(experiments, fName, qvalThresh, foldThresh, hasIso=False):
 ########################
 
 """
-Renames columns so they are standard accross all data
+Renames columns so they are standard across all data
 """
 def stdColNames(data, colNames):
 
