@@ -33,5 +33,7 @@ print(combined_df)
 combined_df.to_csv('../Results/base_analysis/AllProteinDataCombined.csv')
 
 # TODO read the thresholds as arguments
-# TODO modify volcano plot code to change y-axis label
-volcano(combined_df, log2fc='log2 fold change', pvalue='q-value', symbol='Uniprot', to_label=5, pval_thresh=0.1, log2fc_thresh=0.58496250072)
+# Use to_label=[] to disable labels
+volcano(combined_df, log2fc='log2 fold change', pvalue='q-value', symbol='Uniprot', to_label=[], pval_thresh=0.1,
+        log2fc_thresh=0.58496250072, pvalue_label='q-value', alpha=0.5, linewidth=0.5, symmetric_x_axis=True,
+        colors=['black', 'lightgrey'])
