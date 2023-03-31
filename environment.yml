@@ -15,4 +15,4 @@ dependencies:
   - r-readr=2.1.2
   - seaborn=0.12.1
   - pip:
-    - git+https://github.com/mousepixels/sanbomics@89e534f9ad3c8a26ac7698900cf7ea79bffd79a1
+    - git+https://github.com/agitter/sanbomics@4a94f206056e4126089f8b2e7d6239cf78a97fd4
