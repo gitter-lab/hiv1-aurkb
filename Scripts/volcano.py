@@ -2,11 +2,16 @@
 Generate volcano plots from wild type proteomic changes
 """
 import argparse
+import warnings
 from pathlib import Path
 
+import matplotlib as mpl
 import numpy as np
 import pandas as pd
 from sanbomics.plots import volcano
+
+mpl.use('Agg')
+warnings.simplefilter('ignore', UserWarning)  # Ignore the warning about plotting with a non-GUI backend
 
 
 def main():
@@ -26,7 +31,7 @@ def main():
 
     df = pd.read_csv(args.data)
     rows = len(df)
-    print('Read {rows} rows')
+    print(f'Read {rows} rows')
 
     # The Boolean significance calls are not used so drop the column
     df = df.drop(columns='Significant')
@@ -48,23 +53,15 @@ def main():
         combined_df = pd.concat([exp1_df, exp2_df], ignore_index=True)
         assert combined_df.shape == (rows * 2, 6)
 
-        print(combined_df.columns)
-        print(combined_df.head())
-        print(combined_df)
-
         # Create the output filename by adding the time point to the input data filename
         # The .png and .svg file extension is added automatically
         inpath = Path(args.data)
         outpath = str(Path(inpath.parent, inpath.stem)) + time + 'min'
 
-        # combined_df.to_csv('../Results/base_analysis/AllProteinDataCombined.csv')
-
         # Use to_label=[] to disable labels
         volcano(combined_df, log2fc='log2 fold change', pvalue='q-value', symbol='Uniprot', to_label=[],
-                pval_thresh=args.qvalThresh,
-                log2fc_thresh=np.log2(args.foldThresh), pvalue_label='q-value', alpha=0.5, linewidth=0.5,
-                symmetric_x_axis=True,
-                colors=['black', 'lightgrey'], save=outpath, legend=False)
+                pval_thresh=args.qvalThresh, log2fc_thresh=np.log2(args.foldThresh), pvalue_label='q-value', alpha=0.5,
+                linewidth=0.5, symmetric_x_axis=True, colors=['black', 'lightgrey'], save=outpath, legend=False)
 
 
 if __name__ == "__main__":
