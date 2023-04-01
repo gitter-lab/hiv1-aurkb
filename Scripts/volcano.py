@@ -29,6 +29,13 @@ def main():
     # Get command line args
     args = parser.parse_args()
 
+    log2_thresh = np.log2(args.foldThresh)
+
+    # Create the output filename by adding the time point to the input data filename
+    # The .png and .svg file extension is added automatically
+    inpath = Path(args.data)
+    outpath_base = str(Path(inpath.parent, inpath.stem))
+
     df = pd.read_csv(args.data)
     rows = len(df)
     print(f'Read {rows} rows')
@@ -46,22 +53,29 @@ def main():
         exp1_df = time_df.iloc[:, 0:4].join(time_df.loc[:, time_df.columns.str.contains(pat='Exp1')])
         exp1_df.columns = exp1_df.columns.str.replace(f'Exp1 {time} min ', '')
 
+        outpath1 = outpath_base + time + 'minOnlyExp1'
+        volcano(exp1_df, log2fc='log2 fold change', pvalue='q-value', symbol='Uniprot', to_label=[],
+                pval_thresh=args.qvalThresh, log2fc_thresh=log2_thresh, pvalue_label='q-value', alpha=0.5,
+                linewidth=0.5, symmetric_x_axis=True, colors=['black', 'lightgrey'], save=outpath1, legend=False)
+
         exp2_df = time_df.iloc[:, 0:4].join(time_df.loc[:, time_df.columns.str.contains(pat='Exp2')])
         exp2_df.columns = exp2_df.columns.str.replace(f'Exp2 {time} min ', '')
+
+        outpath2 = outpath_base + time + 'minOnlyExp2'
+        volcano(exp2_df, log2fc='log2 fold change', pvalue='q-value', symbol='Uniprot', to_label=[],
+                pval_thresh=args.qvalThresh, log2fc_thresh=log2_thresh, pvalue_label='q-value', alpha=0.5,
+                linewidth=0.5, symmetric_x_axis=True, colors=['black', 'lightgrey'], save=outpath2, legend=False)
 
         # Reshape the data frame so that the values from both replicates are stacked vertically
         combined_df = pd.concat([exp1_df, exp2_df], ignore_index=True)
         assert combined_df.shape == (rows * 2, 6)
 
-        # Create the output filename by adding the time point to the input data filename
-        # The .png and .svg file extension is added automatically
-        inpath = Path(args.data)
-        outpath = str(Path(inpath.parent, inpath.stem)) + time + 'min'
-
+        outpath_combined = outpath_base + time + 'min'
         # Use to_label=[] to disable labels
         volcano(combined_df, log2fc='log2 fold change', pvalue='q-value', symbol='Uniprot', to_label=[],
-                pval_thresh=args.qvalThresh, log2fc_thresh=np.log2(args.foldThresh), pvalue_label='q-value', alpha=0.5,
-                linewidth=0.5, symmetric_x_axis=True, colors=['black', 'lightgrey'], save=outpath, legend=False)
+                pval_thresh=args.qvalThresh, log2fc_thresh=log2_thresh, pvalue_label='q-value', alpha=0.5,
+                linewidth=0.5, symmetric_x_axis=True, colors=['black', 'lightgrey'], save=outpath_combined,
+                legend=False)
 
 
 if __name__ == "__main__":
