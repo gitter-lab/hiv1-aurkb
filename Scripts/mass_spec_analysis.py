@@ -368,7 +368,7 @@ def makeMergedTables(plex1, plex2, plex3, fName, qvalThresh, foldThresh, hasIso=
     foldThresh = np.log2(foldThresh)
     finalData["Significant"] = False
     for time in ["5 min ","60 min "]:
-        for exp in ["Exp 1 ","Exp 2 "]:
+        for exp in ["Exp1 ","Exp2 "]:
             finalData["Significant"] = finalData["Significant"] | ((finalData[exp+time+"q-value"] <= qvalThresh) & (np.abs(finalData[exp+time+"log2 fold change"]) >= foldThresh))
     finalData.to_csv(fName,sep=",",index=False,header=True)
     return
