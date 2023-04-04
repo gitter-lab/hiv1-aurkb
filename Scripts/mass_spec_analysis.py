@@ -66,7 +66,7 @@ def main():
     prot2IDColNames = ['Uniprot']
 
     protDat3 = loadProteinData(proteinFile3)
-    prot3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 128C PCN).1']
+    prot3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 129N PCN)']
     prot3IDColNames = ['Uniprot']
 
     vPrint("Loading Phospho Data")
@@ -80,7 +80,7 @@ def main():
     phos2IDColNames = ['Uniprot','Isoform']
 
     phosDat3 = loadPhosphoData(phosphoFile3)
-    phos3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 128C PCN).1']
+    phos3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 129N PCN)']
     phos3IDColNames = ['Uniprot','Isoform']
 
     #Normalize data
