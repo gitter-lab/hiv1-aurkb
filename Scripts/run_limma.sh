@@ -1,7 +1,7 @@
 #Arguments are: input_prefix output_prefix foldchange_threshold qvalue_threshold
 
 input_prefix=${1:-../Data/mass_spec/csvs/}         # Input prefix to add to all input files.
-output_prefix=${2:-../Results/other_analyses/}   # Output prefix to add to all output files.
+output_prefix=${2:-../Results/control_analysis/}   # Output prefix to add to all output files.
 foldchange_threshold=${3:-1.5}   # Fold change threshold
 qvalue_threshold=${4:-0.1} # q-value threshold
 
