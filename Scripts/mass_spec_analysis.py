@@ -253,7 +253,7 @@ def getTestResults(data,outName,name):
     min60Names = getColNames(data,60)
 
     if len(min5Names)>0:
-        fname = outName+name+"_tmpLimma_05.csv"
+        fname = outName+name+"_05.csv_tmpLimma"
         if not os.path.isfile(fname):
             vPrint("Couldn't find limma result file "+fname)
             return False
@@ -265,12 +265,11 @@ def getTestResults(data,outName,name):
         #Try to cleanup tmp files
         try:
             os.remove(fname)
-            os.remove(outName+name+"_05.csv")
         except OSError:
             pass
 
     if len(min60Names)>0:
-        fname = outName+name+"_tmpLimma_060.csv"
+        fname = outName+name+"_060.csv_tmpLimma"
         if not os.path.isfile(fname):
             vPrint("Couldn't find limma result file "+fname)
             return False
@@ -281,7 +280,6 @@ def getTestResults(data,outName,name):
         #Try to cleanup tmp files
         try:
             os.remove(fname)
-            os.remove(outName+name+"_060.csv")
         except OSError:
             pass
     return True
