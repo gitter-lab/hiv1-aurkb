@@ -246,7 +246,7 @@ def writeExpSetup(data,outName,name):
     return
 
 """
-Gets resuls of t-test and fdr correction from limma
+Gets results of t-test and fdr correction from limma
 """
 def getTestResults(data,outName,name):
     min5Names = getColNames(data,5)
@@ -380,7 +380,7 @@ def makeMergedTables(plex1, plex2, plex3, fName, qvalThresh, foldThresh, hasIso=
 ########################
 
 """
-Renames columns so they are standard accross all data
+Renames columns so they are standard across all data
 """
 def stdColNames(data,min0Names,min5Names=[],min60Names=[]):
     for i in range(len(min0Names)):
