@@ -43,6 +43,20 @@ def main():
     # The Boolean significance calls are not used so drop the column
     df = df.drop(columns='Significant')
 
+    # Get the maximum -log10 q-value over all time points and experiments to set the y-axis limits
+    q_df = df.loc[:, df.columns.str.contains(pat='q-value')]
+    assert q_df.shape[1] == 4
+    max_q = -np.log10(q_df.min().min())
+    print(f'Maximum -log10 q-value: {max_q}')
+    max_q = max_q * 1.025  # add extra padding
+
+    # Get the maximum magnitude -log10 fold change over all time points and experiments to set the x-axis limits
+    fc_df = df.loc[:, df.columns.str.contains(pat='log2 fold change')]
+    assert fc_df.shape[1] == 4
+    max_fc = fc_df.abs().max().max()
+    print(f'Maximum magnitude log2 fold change: {max_fc}')
+    max_fc = max_fc * 1.05  # add extra padding
+
     # Iterate over time points
     for time in ['5', '60']:
         # Select the first four columns and the 5 min columns
@@ -72,10 +86,11 @@ def main():
 
         outpath_combined = outpath_base + time + 'min'
         # Use to_label=[] to disable labels
+        # Only use the manual x and y limits when combining data from both experiments
         volcano(combined_df, log2fc='log2 fold change', pvalue='q-value', symbol='Uniprot', to_label=[],
                 pval_thresh=args.qvalThresh, log2fc_thresh=log2_thresh, pvalue_label='q-value', alpha=0.5,
-                linewidth=0.5, symmetric_x_axis=True, colors=['black', 'lightgrey'], save=outpath_combined,
-                legend=False)
+                linewidth=0.5, symmetric_x_axis=True, x_max=max_fc, y_max=max_q, colors=['black', 'lightgrey'],
+                save=outpath_combined, legend=False)
 
 
 if __name__ == "__main__":
