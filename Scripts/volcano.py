@@ -87,11 +87,11 @@ def main():
 
         outpath_combined = outpath_base + time + 'min'
         # Use to_label=[] to disable labels
-        # Only use the manual x and y limits when combining data from both experiments
+        # Only use the manual x and y limits and increase .png resolution when combining data from both experiments
         volcano(combined_df, log2fc='log2 fold change', pvalue='q-value', symbol='Uniprot', to_label=[],
                 pval_thresh=args.qvalThresh, log2fc_thresh=log2_thresh, pvalue_label='q-value', alpha=0.5,
                 linewidth=0.5, symmetric_x_axis=True, x_max=max_fc, y_max=max_q, colors=['black', 'lightgrey'],
-                save=outpath_combined, legend=False)
+                save=outpath_combined, legend=False, dpi=600)
 
 
 if __name__ == "__main__":
