@@ -16,15 +16,16 @@ warnings.simplefilter('ignore', UserWarning)  # Ignore the warning about plottin
 
 def main():
     parser = argparse.ArgumentParser(description="Generate and save volcano plots. The output filenames are derived "
-                                                 "from the input data filename. Generates one plot for 5 min changes, "
-                                                 "one for 60 min changes, and one combined plot.")
+                                                 "from the input data filename. Generates plots for the 5 min changes "
+                                                 "and the 60 min changes. At each time point the individual "
+                                                 "experiments are plotted separately and also combined.")
     parser.add_argument("--data", type=str, required=True,
-                        help="The file with the q-values and log2 fold changes with the proteomic data.")
+                        help="The file with the q-values and log2 fold changes for the proteomic data.")
     # These should match the thresholds used when generating the data tables
     parser.add_argument("--qvalThresh", type=float, default=0.1,
                         help="The q-value cutoff to use for significance.")
     parser.add_argument("--foldThresh", type=float, default=1.5,
-                        help="The fold change cutoff to use for significance.")
+                        help="The fold change cutoff to use for significance. Not yet on log2 scale.")
 
     # Get command line args
     args = parser.parse_args()
