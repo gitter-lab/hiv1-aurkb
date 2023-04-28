@@ -13,4 +13,4 @@ All code should be run in the conda environment created by `environment.yml`.
 - `environment.yml` - conda environment file specifying both Python and R dependencies
 - `limma_test.R` - R script used to run limma in both analyses
 - `mass_spec_analysis.py` - Python script used only in the wild type analysis
-- `volcano.py` - Python script for generating figures not currently included in the main `.sh` scripts
+- `volcano.py` - Python script for generating volcano plot figures
