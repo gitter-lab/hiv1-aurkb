@@ -1,0 +1,18 @@
+name: hiv1-aurkb
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - adjusttext=0.7.3
+  - bioconductor-limma=3.50.3 # Not available for Windows, Windows users comment out and install through Bioconductor separately
+  - bioconductor-qvalue=2.26.0
+  - matplotlib=3.6.2
+  - numpy=1.21.2
+  - pandas=1.3.4
+  - pip=22.3.1
+  - python=3.9.7
+  - r-base=4.1.1
+  - r-readr=2.1.2
+  - seaborn=0.12.1
+  - pip:
+    - git+https://github.com/agitter/sanbomics@fe967a939491ef150b2c9c00d32801876d5be5fa

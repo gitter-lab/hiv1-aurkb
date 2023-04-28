@@ -66,7 +66,7 @@ def main():
     prot2IDColNames = ['Uniprot']
 
     protDat3 = loadProteinData(proteinFile3)
-    prot3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 128C PCN).1']
+    prot3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 129N PCN)']
     prot3IDColNames = ['Uniprot']
 
     vPrint("Loading Phospho Data")
@@ -80,7 +80,7 @@ def main():
     phos2IDColNames = ['Uniprot','Isoform']
 
     phosDat3 = loadPhosphoData(phosphoFile3)
-    phos3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 128C PCN).1']
+    phos3ColNames = ['WT_0Min_(TMT 126C PCN)','WT_0Min_(TMT 127N PCN)','WT_60Min_(TMT 128C PCN)','WT_60Min_(TMT 129N PCN)']
     phos3IDColNames = ['Uniprot','Isoform']
 
     #Normalize data
@@ -246,14 +246,14 @@ def writeExpSetup(data,outName,name):
     return
 
 """
-Gets resuls of t-test and fdr correction from limma
+Gets results of t-test and fdr correction from limma
 """
 def getTestResults(data,outName,name):
     min5Names = getColNames(data,5)
     min60Names = getColNames(data,60)
 
     if len(min5Names)>0:
-        fname = outName+name+"_tmpLimma_05.csv"
+        fname = outName+name+"_05.csv_tmpLimma"
         if not os.path.isfile(fname):
             vPrint("Couldn't find limma result file "+fname)
             return False
@@ -265,12 +265,11 @@ def getTestResults(data,outName,name):
         #Try to cleanup tmp files
         try:
             os.remove(fname)
-            os.remove(outName+name+"_05.csv")
         except OSError:
             pass
 
     if len(min60Names)>0:
-        fname = outName+name+"_tmpLimma_060.csv"
+        fname = outName+name+"_060.csv_tmpLimma"
         if not os.path.isfile(fname):
             vPrint("Couldn't find limma result file "+fname)
             return False
@@ -281,7 +280,6 @@ def getTestResults(data,outName,name):
         #Try to cleanup tmp files
         try:
             os.remove(fname)
-            os.remove(outName+name+"_060.csv")
         except OSError:
             pass
     return True
@@ -380,7 +378,7 @@ def makeMergedTables(plex1, plex2, plex3, fName, qvalThresh, foldThresh, hasIso=
 ########################
 
 """
-Renames columns so they are standard accross all data
+Renames columns so they are standard across all data
 """
 def stdColNames(data,min0Names,min5Names=[],min60Names=[]):
     for i in range(len(min0Names)):
