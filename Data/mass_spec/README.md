@@ -14,3 +14,6 @@ Only the wild type condition and the HIV-1-positive producer Jurkat T cells ("li
 
 The duplicate use of the 127C and 128C TMT labels in Exp2 (10-plex 2) appears to be a data entry error.
 This was corrected in the csv files but preserved in the xlsx files.
+
+Raw data files are available from project 1785 at https://chorusproject.org.
+Account registration is required.
