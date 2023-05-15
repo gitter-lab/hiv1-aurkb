@@ -13,19 +13,25 @@ from sanbomics.plots import volcano
 mpl.use('Agg')
 warnings.simplefilter('ignore', UserWarning)  # Ignore the warning about plotting with a non-GUI backend
 
+# Modify settings so that svg graphics have editable text
+new_rc_params = {'text.usetex': False,
+                 'svg.fonttype': 'none'
+                 }
+mpl.rcParams.update(new_rc_params)
+
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate and save volcano plots. The output filenames are derived "
-                                                 "from the input data filename. Generates plots for the 5 min changes "
-                                                 "and the 60 min changes. At each time point the individual "
-                                                 "experiments are plotted separately and also combined.")
-    parser.add_argument("--data", type=str, required=True,
-                        help="The file with the q-values and log2 fold changes for the proteomic data.")
+    parser = argparse.ArgumentParser(description='Generate and save volcano plots. The output filenames are derived '
+                                                 'from the input data filename. Generates plots for the 5 min changes '
+                                                 'and the 60 min changes. At each time point the individual '
+                                                 'experiments are plotted separately and also combined.')
+    parser.add_argument('--data', type=str, required=True,
+                        help='The file with the q-values and log2 fold changes for the proteomic data.')
     # These should match the thresholds used when generating the data tables
-    parser.add_argument("--qvalThresh", type=float, default=0.1,
-                        help="The q-value cutoff to use for significance.")
-    parser.add_argument("--foldThresh", type=float, default=1.5,
-                        help="The fold change cutoff to use for significance. Not yet on log2 scale.")
+    parser.add_argument('--qvalThresh', type=float, default=0.1,
+                        help='The q-value cutoff to use for significance.')
+    parser.add_argument('--foldThresh', type=float, default=1.5,
+                        help='The fold change cutoff to use for significance. Not yet on log2 scale.')
 
     # Get command line args
     args = parser.parse_args()
@@ -58,6 +64,9 @@ def main():
     print(f'Maximum magnitude log2 fold change: {max_fc}')
     max_fc = max_fc * 1.05  # add extra padding
 
+    # Cannot set different colors for significantly up and down regulated proteins
+    color_list=['blue', 'lightgrey']
+
     # Iterate over time points
     for time in ['5', '60']:
         # Select the first four columns and the 5 min columns
@@ -71,7 +80,7 @@ def main():
         outpath1 = outpath_base + time + 'minOnlyExp1'
         volcano(exp1_df, log2fc='log2 fold change', pvalue='q-value', symbol='Uniprot', to_label=[],
                 pval_thresh=args.qvalThresh, log2fc_thresh=log2_thresh, pvalue_label='q-value', alpha=0.5,
-                linewidth=0.5, symmetric_x_axis=True, colors=['black', 'lightgrey'], save=outpath1, legend=False)
+                linewidth=0.5, symmetric_x_axis=True, colors=color_list, save=outpath1, legend=False)
 
         exp2_df = time_df.iloc[:, 0:4].join(time_df.loc[:, time_df.columns.str.contains(pat='Exp2')])
         exp2_df.columns = exp2_df.columns.str.replace(f'Exp2 {time} min ', '')
@@ -79,7 +88,7 @@ def main():
         outpath2 = outpath_base + time + 'minOnlyExp2'
         volcano(exp2_df, log2fc='log2 fold change', pvalue='q-value', symbol='Uniprot', to_label=[],
                 pval_thresh=args.qvalThresh, log2fc_thresh=log2_thresh, pvalue_label='q-value', alpha=0.5,
-                linewidth=0.5, symmetric_x_axis=True, colors=['black', 'lightgrey'], save=outpath2, legend=False)
+                linewidth=0.5, symmetric_x_axis=True, colors=color_list, save=outpath2, legend=False)
 
         # Reshape the data frame so that the values from both replicates are stacked vertically
         combined_df = pd.concat([exp1_df, exp2_df], ignore_index=True)
@@ -90,9 +99,9 @@ def main():
         # Only use the manual x and y limits and increase .png resolution when combining data from both experiments
         volcano(combined_df, log2fc='log2 fold change', pvalue='q-value', symbol='Uniprot', to_label=[],
                 pval_thresh=args.qvalThresh, log2fc_thresh=log2_thresh, pvalue_label='q-value', alpha=0.5,
-                linewidth=0.5, symmetric_x_axis=True, x_max=max_fc, y_max=max_q, colors=['black', 'lightgrey'],
-                save=outpath_combined, legend=False, dpi=600)
+                linewidth=0.5, symmetric_x_axis=True, x_max=max_fc, y_max=max_q, colors=color_list,
+                save=outpath_combined, legend=False, dpi=1200)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
