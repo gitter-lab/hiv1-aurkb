@@ -15,5 +15,13 @@ Only the wild type condition and the HIV-1-positive producer Jurkat T cells ("li
 The duplicate use of the 127C and 128C TMT labels in Exp2 (10-plex 2) appears to be a data entry error.
 This was corrected in the csv files but preserved in the xlsx files.
 
+The condition names in these data files differ from the final names in the manuscript.
+The mapping to the condition names presented in Figure 2 is:
+- WT = Full virus
+- Env = ΔEnv
+- Genome = Env only
+
+Experiment 2 conditions that were not used in the analyses are not shown in Figure 2.
+
 Raw data files are available from project 1785 at https://chorusproject.org.
 Account registration is required.
