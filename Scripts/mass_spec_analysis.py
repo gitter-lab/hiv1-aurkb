@@ -171,9 +171,11 @@ def main():
     phos3_60.to_csv(outName+'sigPhos3_60.tsv',sep='\t',index=False)
 
     #Create and save off prize lists
+    #There are not 60 min data points in plex2 or 5 min data points in plex3
     if makePrizes:
+        vPrint("Making prizes")
         createPrizeList(prot1_05, prot2_05, phos1_05, phos2_05, "05", outName)
-        createPrizeList(prot1_60, prot2_60, phos1_60, phos2_60, "060", outName)
+        createPrizeList(prot1_60, prot3_60, phos1_60, phos3_60, "060", outName)
     return
 
 #################################
@@ -307,12 +309,9 @@ Given lists of significant items, creates and save a prize list
 """
 def createPrizeList(prot1, prot2, phos1, phos2, time, outLoc):
     timeN = "qVal"+time
-
     #First, we want to condense this down to a single list
-    datList = [prot1[["Uniprot",timeN]],prot2[["Uniprot",timeN]],phos1[["Uniprot",timeN]],phos2[["Uniprot",timeN]]]
-    sigDat = datList[0]
-    for i in range(1,len(datList)):
-        sigDat = sigDat.append(datList)
+    #Retain the min q-value per unique Uniprot ID by concatenating the four dataframes and sorting
+    sigDat = pd.concat([prot1[["Uniprot",timeN]],prot2[["Uniprot",timeN]],phos1[["Uniprot",timeN]],phos2[["Uniprot",timeN]]], axis=0, ignore_index=True)
     sigDat = sigDat.sort_values(by=timeN, ascending=True)
     sigDat = sigDat.drop_duplicates(subset="Uniprot",keep="first")
 

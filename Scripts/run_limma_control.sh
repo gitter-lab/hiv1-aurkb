@@ -19,6 +19,6 @@ python compare_control_conditions.py ${input_prefix}protein_plex1_raw.csv ${inpu
 ##Run limma
 #for i in `ls -d1 $PWD/${output_prefix}exp*`; do echo $i; Rscript limma_test.R $i; done;
 #
-##Create prize lists from limma results
+##Summarize results from limma results
 #python compare_control_conditions.py ${input_prefix}protein_plex1_raw.csv ${input_prefix}protein_plex3_raw.csv ${input_prefix}protein_plex2_raw.csv  ${input_prefix}phospho_plex1_raw.csv ${input_prefix}phospho_plex3_raw.csv ${input_prefix}phospho_plex2_raw.csv --verbose --outName=${output_prefix} --foldThresh=${foldchange_threshold} --qvalThresh=${qvalue_threshold};
 #
