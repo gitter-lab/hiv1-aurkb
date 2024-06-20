@@ -8,7 +8,7 @@ import os.path
 Author: Chris Magnano
 2/07/2023
 
-This script takes in raw data for both experiments, normalizes it, calculates fold changes, and uses limma in an R script to get significance values. It also creates input files for phosFate.
+This script takes in raw data for both experiments, normalizes it, calculates fold changes, and uses limma in an R script to get significance values.
 
 Outputs:
 2. Files with all fold changes and p-values - 6 files, 3 10-plexes, and protein by phos data.
@@ -31,7 +31,6 @@ def main():
     parser.add_argument("phosphoData3", help="This is the file containing phosphoproteomic mass spec data for the 3rd 10-plex.")
     parser.add_argument("--outName", default="output", help="This is a prefix which will be added to all output files.")
     parser.add_argument('--verbose', action='store_true', help='If true outputs additional text.' )
-    parser.add_argument('--makePrizes', action='store_true', help='If true will also make merged prize lists for each time point. Expects an Uniprot column in all input data' )
 
     #NOTE: These arguments were included to deal with different labelings which might be more or less conservative.
     #However, DO NOT run this script multiple times with different thresholds on the same data to "see which is best"
@@ -50,7 +49,6 @@ def main():
 
     outName  = args.outName
     verbose = args.verbose
-    makePrizes = args.makePrizes
     qvalThresh = float(args.qvalThresh)
     foldThresh = float(args.foldThresh)
 
@@ -272,40 +270,6 @@ def filterRes(experiment,qvalThresh,foldThresh):
     vPrint("There are "+str(len(filteredData))+" significant results for "+" ".join(experiment[1:]))
 
     return filteredData
-
-"""
-Given lists of significant items, creates and save a prize list
-"""
-def createPrizeList(prot1, prot2, phos1, phos2, time, outLoc):
-    timeN = "qVal"+time
-
-    #First, we want to condense this down to a single list
-    datList = [prot1[["Uniprot",timeN]],prot2[["Uniprot",timeN]],phos1[["Uniprot",timeN]],phos2[["Uniprot",timeN]]]
-    sigDat = datList[0]
-    for i in range(1,len(datList)):
-        sigDat = sigDat.append(datList)
-    sigDat = sigDat.sort_values(by=timeN, ascending=True)
-    sigDat = sigDat.drop_duplicates(subset="Uniprot",keep="first")
-
-    #Prizes are created from -log2(qVal)
-    sigDat["Prize"] = -1 * np.log2(sigDat[timeN])
-
-    #Save prize file
-    sigDat.to_csv(outLoc + "prize_"+time+".csv",sep='\t',index=False, columns=["Uniprot","Prize"])
-    return
-
-"""
-Makes input files for phosFate enrichment
-"""
-def makePhosfateInput(data,name,outName,time):
-    #Get isoform as a raw number
-    data = data.copy()
-    data["Isoform"] = data["Isoform"].str.split(";")
-    data = data.explode("Isoform")
-    data = data.dropna()
-    data["IsoNum"] = data["Isoform"].str.extract(".*\((.*)\).*")
-    data.to_csv(outName+name+"Phosfate.csv",sep=",",columns=["Uniprot","IsoNum","log"+time],index=False,header=False)
-    return
 
 """
 Creates a single table of all protein or phospho data, determined by hasIso and the input data
