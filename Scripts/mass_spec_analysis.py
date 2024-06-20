@@ -315,8 +315,8 @@ def createPrizeList(prot1, prot2, phos1, phos2, time, outLoc):
     sigDat = sigDat.sort_values(by=timeN, ascending=True)
     sigDat = sigDat.drop_duplicates(subset="Uniprot",keep="first")
 
-    #Prizes are created from -log2(qVal)
-    sigDat["Prize"] = -1 * np.log2(sigDat[timeN])
+    #Prizes are created from -log10(qVal)
+    sigDat["Prize"] = -1 * np.log10(sigDat[timeN])
 
     #Save prize file
     sigDat.to_csv(outLoc + "prize_"+time+".csv",sep='\t',index=False, columns=["Uniprot","Prize"])
